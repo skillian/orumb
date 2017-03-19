@@ -83,3 +83,35 @@ func (a ObjectNameAttrType) GetValue(o Object) (Object, error) {
 func (a ObjectNameAttrType) SetValue(o, v Object) error {
     return AttrReadOnly
 }
+
+//
+// ObjectLenAttr
+//
+
+type Lener interface {
+    Len() int
+}
+
+type ObjectLenAttrType struct {}
+
+var ObjectLenAttr Attr = ObjectLenAttrType{}
+
+func (a ObjectLenAttrType) Class() Class {
+    return IntClass
+}
+
+func (a ObjectLenAttrType) Name() string {
+    return "Len"
+}
+
+func (a ObjectLenAttrType) GetValue(o Object) (Object, error) {
+    if L, ok := o.(Lener); ok {
+        return MakeInt(L.Len()), nil
+    } else {
+        return nil, MakeTypeErrorString("Len", o)
+    }
+}
+
+func (a ObjectLenAttrType) SetValue(o, v Object) error {
+    return AttrReadOnly
+}
