@@ -30,3 +30,34 @@ func (s *Slot) SetValue(o, v Object) error {
 		return fmt.Errorf("Expected SlotObject, not %T", o)
 	}
 }
+
+//
+// SlotObject
+//
+
+type SlotObject struct {
+	c Class
+	slots []Object
+}
+
+func (o *SlotObject) Class() Class {
+	return ObjectClass
+}
+
+func getSlotAttrCount(attrs []Attr) int {
+	if attrs == nil {
+		return 0
+	} else {
+		var c int = 0
+		for _, a := range attrs {
+			if _, ok := a.(Slot) {
+				c += 1
+			}
+		}
+		return c
+	}
+}
+
+func MakeSlotObject(c Class) *SlotObject {
+	return &SlotObject{c, make([]Object, getSlotAttrCount(c.Attrs())}
+}
