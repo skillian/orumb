@@ -2,8 +2,8 @@ package orumb
 
 // Simpe Attr implementation for quickly defining attributes
 type attr struct {
-    cls Class
     name string
+    cls Class
     get func(o Object) (Object, error)
     set func(o, v Object) error
 }
