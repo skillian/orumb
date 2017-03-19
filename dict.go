@@ -102,39 +102,20 @@ func (c KeyValuePairClassType) Base() Class {
 
 var kvpAttrs []Attr = []Attr{
 	ObjectClassAttr,
-	KVPKeyAttr,
-	KVPValueAttr,
+	attr{"Key", ObjectClass, func(o Object) (Object, error) {
+		return o.(KeyValuePair).Key, nil
+	}, func(o, v Object) error {
+		o.(*KeyValuePair).Key = v
+		return nil
+	}},
+	attr{"Value", ObjectClass, func(o Object) (Object, error) {
+		return o.(*KeyValuePair).Value, nil
+	}, func(o, v Object) error {
+		o.(*KeyValuePair).Value = v
+		return nil
+	}},
 }
 
 func (c KeyValuePairClassType) Attrs() []Attr {
 	return kvpAttrs
-}
-
-//
-// KeyValuePair.Key
-//
-
-type KVPKeyAttrType struct {}
-
-type KVPKeyAttr Attr = KVPKeyAttrType{}
-
-func (a KVPKeyAttrType) Class() Class {
-	return ObjectClass
-}
-
-func (a KVPKeyAttrType) Name() string {
-	return "Key"
-}
-
-func (a KVPKeyAttrType) GetValue(o Object) (Object, error) {
-	if kvp, ok := o.(KeyValuePair); ok {
-		return kvp.Key, nil
-	} else {
-		return nil, MakeTypeErrorFromExpectedAndActual(KeyValuePairClass, o.Class())
-	}
-}
-
-func (a KVPKeyAttrType) SetValue(o, v Object) (Object, error) {
-	if kvp, ok := o.(KeyValuePair); ok {
-		
 }
