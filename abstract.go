@@ -1,5 +1,10 @@
 package orumb
 
+import (
+    "errors"
+    "fmt"
+)
+
 // Simpe Attr implementation for quickly defining attributes
 type attr struct {
     name string
@@ -19,7 +24,7 @@ func (a attr) Name() string {
 func RecoverToError(err *error) {
     e := recover()
     if *err == nil && e != nil {
-        *err = e
+        *err = errors.New(fmt.Sprint(e))
     }
 }
 
